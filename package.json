@@ -1,0 +1,14 @@
+{
+  "name": "tinyurl",
+  "version": "1.0.0",
+  "description": "convert long urls to short ones",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Shane Richman",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.2"
+  }
+}
