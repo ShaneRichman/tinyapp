@@ -4,6 +4,32 @@
 </head>
 <body>
   <% include partials/_header %>
-    <%= urls %>
+  <h2>Here are our tiny urls</h2>
+  <table>
+    <% for (const tinyURL in urls) { %>
+    <tr>
+      <td>
+        <h3><%= tinyURL %></h3>
+      </td>
+      <td>
+        <h3> ==> </h3>
+      </td>
+      <td>
+        </a>
+        <h3><a href="<%= urls[tinyURL] %>"><%= urls[tinyURL] %></a>
+        </h3>
+        <td>
+          <a href="/urls/<%= tinyURL %>">Edit</a>
+        </td>
+      </td>
+      <td>
+        <form method="POST" action="/urls/<%= tinyURL%>/delete">
+          <!-- <button>Detete url</button> -->
+          <input id="deleteURL" type="submit" value="DELETE" name="deleteURL" style="width: 300px">
+        </form>
+      </td>
+    </tr>
+    <% } %>
+  </table>
 </body>
 </html>

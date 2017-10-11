@@ -3,6 +3,24 @@
 <head></head>
 <body>
   <% include partials/_header %>
-    <%= shortURL %>
+  <table>
+    <tr>
+      <td>
+        <h1>Short URL: <%= shortURL %></h1>
+      </td>
+    </tr>
+    </table>
+    <table>
+    <tr>
+      <form action="/urls/<%= shortURL %>" method="POST" style="margin:150px;">
+        <td>
+          <input id="longURL" type="text" name="longURL" placeholder="<%= longURL %>" style="width: 300px">
+        </td>
+        <td>
+          <input type="submit" value="Update">
+        </td>
+      </form>
+    </tr>
+  </table>
 </body>
 </html>
