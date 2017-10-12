@@ -15,20 +15,23 @@
         <h3> ==> </h3>
       </td>
       <td>
-        </a>
-        <h3><a href="<%= urls[tinyURL] %>"><%= urls[tinyURL] %></a>
-        </h3>
-        <td>
-          <a href="/urls/<%= tinyURL %>">Edit</a>
-        </td>
-      </td>
+      </a>
+      <h3><a href="<%= urls[tinyURL] %>"><%= urls[tinyURL] %></a>
+      </h3>
       <td>
-        <form method="POST" action="/urls/<%= tinyURL%>/delete">
-          <input id="deleteURL" type="submit" value="DELETE" name="deleteURL" style="width: 300px">
-        </form>
+        <a href="/urls/<%= tinyURL %>">Edit</a>
       </td>
-    </tr>
-    <% } %>
-  </table>
+    </td>
+    <td>
+      <form action="/urls/<%= tinyURL%>/delete" method="POST">
+        <input type="hidden" name="DELETE" value="<%= tinyURL%>">
+        <button type="submit" name="deleteURL" id="deleteURL">
+          DELETE
+        </button>
+      </form>
+    </td>
+  </tr>
+  <% } %>
+</table>
 </body>
 </html>
