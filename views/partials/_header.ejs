@@ -1,6 +1,6 @@
-<% if (username) { %>
+<% if (user) { %>
 
-<p>Your Username is: <%= username%></p>
+<p>Your Email is: <%= user.email%></p>
 
 <form action="/logout" method="POST">
   <button>
@@ -10,10 +10,16 @@
 
 <% } else { %>
 
-<form action="/login" method="POST" style="margin:150px;">
-  <label for="username">Enter a username:</label>
-  <input id="username" type="text" name="username" placeholder="ex. John123" style="width: 150px" required>
-  <input type="submit" value="Submit">
+<form action="/login" method="GET">
+  <button>
+    Login
+  </button>
+</form>
+
+<form action="/register" method="GET">
+  <button>
+    Register
+  </button>
 </form>
 
 <% } %>

@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+  <body style="font-size:20px; padding:50px;">
+    <% include partials/_header %>
+    <form action="/login" method="POST" style="margin:150px;">
+      <label for="email">Enter your email:</label>
+      <input id="email" type="email" name="email" placeholder="ex. JimmyJ@website.com" style="width: 300px">
+      <label for="password">Enter your Password:</label>
+      <input id="password" type="password" name="password" style="width: 300px">
+      <input type="submit" value="Submit">
+    </form>
+  </body>
+</html>
