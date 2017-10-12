@@ -1,5 +1,7 @@
 var express = require("express");
-var app = express();
+var cookieParser = require('cookie-parser')
+var app = express()
+app.use(cookieParser())
 var PORT = process.env.PORT || 8080; // default port 8080
 app.set("view engine", "ejs");
 const bodyParser = require("body-parser");
@@ -20,7 +22,8 @@ app.get("/", (req, res) => {
 
 app.get("/urls", (req, res) => {
   let templateVars = {
-    urls: urlDatabase
+    urls: urlDatabase,
+    username: req.cookies["username"]
   };
   res.render("urls_index", templateVars);
 });
@@ -44,7 +47,8 @@ app.get("/urls/:id", (req, res) => {
   const tinyurl = req.params.id;
   let templateVars = {
     shortURL: tinyurl,
-    longURL: urlDatabase[tinyurl]
+    longURL: urlDatabase[tinyurl],
+    username: req.cookies["username"]
   };
   res.render("urls_show", templateVars);
 });
@@ -52,6 +56,11 @@ app.get("/urls/:id", (req, res) => {
 app.post("/urls/:id", (req, res) => {
   urlDatabase[req.params.id] = req.body.longURL;
   res.redirect("/urls/" + req.params.id);
+});
+
+app.post("/login", (req, res) => {
+  res.cookie("username", req.body.username);
+  res.redirect("/urls");
 });
 
 app.get("/u/:shortURL", (req, res) => {
