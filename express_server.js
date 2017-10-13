@@ -39,7 +39,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/urls/new', (req, res, next) => {
+app.use('/urls', (req, res, next) => {
   userServices.forbiddenIfNotLoggedIn(req, res, next);
 });
 
@@ -110,8 +110,9 @@ app.get("/", (req, res) => {
 });
 
 app.get("/urls", (req, res) => {
+  const usersURLS = userServices.findUsersURLS(urlDatabase, req.cookies["user_id"])
   let templateVars = {
-    urls: urlDatabase,
+    urls: usersURLS,
     user: users[req.cookies["user_id"]]
   };
   res.render("urls_index", templateVars);
@@ -144,12 +145,17 @@ app.post("/urls/:id/delete", (req, res) => {
 
 app.get("/urls/:id", (req, res) => {
   const tinyurl = req.params.id;
-  let templateVars = {
-    shortURL: tinyurl,
-    longURL: urlDatabase[tinyurl].url,
-    user: users[req.cookies["user_id"]]
-  };
-  res.render("urls_show", templateVars);
+  if (urlDatabase[req.params.id].userID === req.cookies["user_id"]) {
+    let templateVars = {
+      shortURL: tinyurl,
+      longURL: urlDatabase[tinyurl].url,
+      user: users[req.cookies["user_id"]]
+    };
+    res.render("urls_show", templateVars);
+  } else {
+    res.status(418);
+    res.send("WOW THERE BUDDY. That aint yours!");
+  }
 });
 
 app.post("/urls/:id", (req, res) => {

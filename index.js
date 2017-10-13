@@ -18,19 +18,27 @@ function authenticate(email, password, users) {
 
 function forbiddenIfNotLoggedIn(req, res, next) {
   if (res.locals.user === undefined) {
-    res.sendStatus(403);
+    res.status(403);
+    res.send("You need to <a href=/login>login</a> or <a href=/register>Register</a> first");
   } else {
     next();
   }
 }
 
-function isThisYours(req, res, next) {
-  if (res.locals.user === undefined) {
-    res.sendStatus(403);
-  } else {
-    next();
-  }
+function urlBelongs() {
+
 }
+
+function findUsersURLS(database, currentUserId) {
+  const obj = {};
+  for (tinyURL in database) {
+    if (database[tinyURL].userID === currentUserId) {
+      obj[tinyURL] = database[tinyURL].url
+    }
+  }
+  return obj;
+}
+
 
 function getById(id, users) {
   for (user in users) {
@@ -46,5 +54,6 @@ module.exports = {
   authenticate: authenticate,
   forbiddenIfNotLoggedIn: forbiddenIfNotLoggedIn,
   getById: getById,
-  isThisYours: isThisYours
+  findUsersURLS: findUsersURLS,
+  urlBelongs: urlBelongs
 };
