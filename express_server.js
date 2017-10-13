@@ -47,6 +47,19 @@ app.use('/urls', (req, res, next) => {
   userServices.forbiddenIfNotLoggedIn(req, res, next);
 });
 
+app.get("/", (req, res) => {
+  res.redirect("/urls");
+});
+
+app.get("/urls", (req, res) => {
+  const usersURLS = userServices.findUsersURLS(urlDatabase, req.session["user_id"])
+  let templateVars = {
+    urls: usersURLS,
+    user: users[req.session["user_id"]]
+  };
+  res.render("urls_index", templateVars);
+});
+
 app.get("/register", (req, res) => {
   let templateVars = {
     user: users[req.session["user_id"]]
@@ -56,6 +69,66 @@ app.get("/register", (req, res) => {
   } else {
     res.render("register_index", templateVars);
   }
+});
+
+
+app.get("/login", (req, res) => {
+  let templateVars = {
+    user: users[req.session["user_id"]]
+  };
+  if (templateVars.user) {
+    res.redirect("/urls");
+  } else {
+    res.render("login_index", templateVars);
+  }
+});
+
+app.get("/urls/new", (req, res) => {
+  let templateVars = {
+    urls: urlDatabase,
+    user: users[req.session["user_id"]]
+  };
+  res.render("urls_new", templateVars);
+});
+
+app.get("/urls/:id", (req, res) => {
+  const tinyurl = req.params.id;
+  if (!!urlDatabase[tinyurl]) {
+    if (urlDatabase[req.params.id].userID === req.session["user_id"]) {
+      let templateVars = {
+        shortURL: tinyurl,
+        longURL: urlDatabase[tinyurl].url,
+        user: users[req.session["user_id"]]
+      };
+      res.render("urls_show", templateVars);
+    } else {
+      res.status(403);
+      res.render("notAllowed");
+    }
+  } else {
+    res.status(404);
+    res.render("notFound");
+  }
+});
+
+app.get("/u/:shortURL", (req, res) => {
+  if (urlDatabase[req.params.shortURL]) {
+    let longURL = urlDatabase[req.params.shortURL].url;
+    res.redirect(longURL);
+  } else {
+    res.status(404);
+    res.render("notFound");
+  }
+});
+
+app.get("/notAllowed", (req, res) => {
+  res.status(403);
+  res.render("notAllowed");
+});
+
+app.get("/notFound", (req, res) => {
+  res.status(404);
+  res.render("notFound");
 });
 
 app.post("/register", (req, res) => {
@@ -84,17 +157,6 @@ app.post("/register", (req, res) => {
   }
 });
 
-app.get("/login", (req, res) => {
-  let templateVars = {
-    user: users[req.session["user_id"]]
-  };
-  if (templateVars.user) {
-    res.redirect("/urls");
-  } else {
-    res.render("login_index", templateVars);
-  }
-});
-
 app.post("/login", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
@@ -107,28 +169,6 @@ app.post("/login", (req, res) => {
     res.status(403);
     res.redirect("/notFound");
   }
-});
-
-
-app.get("/", (req, res) => {
-  res.redirect("/urls");
-});
-
-app.get("/urls", (req, res) => {
-  const usersURLS = userServices.findUsersURLS(urlDatabase, req.session["user_id"])
-  let templateVars = {
-    urls: usersURLS,
-    user: users[req.session["user_id"]]
-  };
-  res.render("urls_index", templateVars);
-});
-
-app.get("/urls/new", (req, res) => {
-  let templateVars = {
-    urls: urlDatabase,
-    user: users[req.session["user_id"]]
-  };
-  res.render("urls_new", templateVars);
 });
 
 app.post("/urls", (req, res) => {
@@ -147,26 +187,6 @@ app.post("/urls/:id/delete", (req, res) => {
   res.redirect("/notAllowed");
 });
 
-app.get("/urls/:id", (req, res) => {
-  const tinyurl = req.params.id;
-  if (!!urlDatabase[tinyurl]) {
-    if (urlDatabase[req.params.id].userID === req.session["user_id"]) {
-      let templateVars = {
-        shortURL: tinyurl,
-        longURL: urlDatabase[tinyurl].url,
-        user: users[req.session["user_id"]]
-      };
-      res.render("urls_show", templateVars);
-    } else {
-      res.status(403);
-      res.render("notAllowed");
-    }
-  } else {
-    res.status(404);
-    res.render("notFound");
-  }
-});
-
 app.post("/urls/:id", (req, res) => {
   if (urlDatabase[req.params.id].userID === req.session["user_id"]) {
     urlDatabase[req.params.id].url = req.body.longURL;
@@ -179,26 +199,6 @@ app.post("/urls/:id", (req, res) => {
 app.post("/logout", (req, res) => {
   req.session.user_id = null;
   res.redirect("/urls");
-});
-
-app.get("/u/:shortURL", (req, res) => {
-  if (urlDatabase[req.params.shortURL]) {
-    let longURL = urlDatabase[req.params.shortURL].url;
-    res.redirect(longURL);
-  } else {
-    res.status(404);
-    res.render("notFound");
-  }
-});
-
-app.get("/notAllowed", (req, res) => {
-  res.status(403);
-  res.render("notAllowed");
-});
-
-app.get("/notFound", (req, res) => {
-  res.status(404);
-  res.render("notFound");
 });
 
 app.listen(PORT, () => {

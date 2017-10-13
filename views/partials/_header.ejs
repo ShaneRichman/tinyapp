@@ -1,7 +1,6 @@
 <% if (user) { %>
 
 <p>Your Email is: <%= user.email%></p>
-
 <form action="/logout" method="POST">
   <button>
     Logout
@@ -15,7 +14,6 @@
     Login
   </button>
 </form>
-
 <form action="/register" method="GET">
   <button>
     Register
