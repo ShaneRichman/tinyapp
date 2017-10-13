@@ -9,15 +9,15 @@
     <% for (const tinyURL in urls) { %>
     <tr>
       <td>
-        <h3><%= tinyURL %></h3>
+        <h4><%= tinyURL %></h4>
       </td>
       <td>
-        <h3> ==> </h3>
+        <h4> ==> </h4>
       </td>
       <td>
       </a>
-      <h3><a href="<%= urls[tinyURL] %>"><%= urls[tinyURL] %></a>
-      </h3>
+      <h4><a href="<%= urls[tinyURL] %>"><%= urls[tinyURL] %></a>
+      </h4>
       <td>
         <a href="/urls/<%= tinyURL %>">Edit</a>
       </td>
@@ -33,5 +33,6 @@
   </tr>
   <% } %>
 </table>
+<h3>Create your own <a href="/urls/new">TINY URLS</a></h3>
 </body>
 </html>

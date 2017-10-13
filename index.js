@@ -10,13 +10,6 @@ function generateRandomString(numChars) {
 
 function authenticate(email, password, users) {
   for (user in users) {
-    console.log();
-    // const hashedUserPasswords = bcrypt.hashSync(users[user].password, 10)
-    // console.log(users);
-    console.log(users[user].password);
-    console.log(password);
-    // console.log("hashed password", hashedUserPasswords);
-    // console.log(bcrypt.compareSync(hashedUserPasswords, password));
     if (users[user].email === email && bcrypt.compareSync(password, users[user].password)) {
       return users[user];
     }
