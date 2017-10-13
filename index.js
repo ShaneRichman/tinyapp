@@ -16,10 +16,26 @@ function authenticate(email, password, users) {
   return undefined;
 }
 
+function forbiddenIfNotLoggedIn(req, res, next) {
+  if (res.locals.user === undefined) {
+    res.sendStatus(403);
+  } else {
+    next();
+  }
+}
+
+function isThisYours(req, res, next) {
+  if (res.locals.user === undefined) {
+    res.sendStatus(403);
+  } else {
+    next();
+  }
+}
+
 function getById(id, users) {
-  for (let i = 0; i < users.length; i += 1) {
-    if (users[i].id === id) {
-      return users[i];
+  for (user in users) {
+    if (users[user].id === id) {
+      return users[user];
     }
   }
   return undefined;
@@ -28,5 +44,7 @@ function getById(id, users) {
 module.exports = {
   generateRandomString: generateRandomString,
   authenticate: authenticate,
-  getById: getById
+  forbiddenIfNotLoggedIn: forbiddenIfNotLoggedIn,
+  getById: getById,
+  isThisYours: isThisYours
 };
