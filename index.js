@@ -20,7 +20,7 @@ function authenticate(email, password, users) {
 function forbiddenIfNotLoggedIn(req, res, next) {
   if (res.locals.user === undefined) {
     res.status(403);
-    res.send("You need to <a href=/login>login</a> or <a href=/register>Register</a> first");
+    res.redirect("/login");
   } else {
     next();
   }
