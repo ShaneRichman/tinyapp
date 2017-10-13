@@ -60,13 +60,13 @@ app.get("/register", (req, res) => {
 
 app.post("/register", (req, res) => {
   const email = req.body.email;
-  const password = bcrypt.hashSync(req.body.password, 10);
-
+  const password = req.body.password;
   if (email === "" || password === "") {
     res.status(400);
     res.send("You need both an Email and a password. <a href=/register >try again</a>");
   } else {
-    const user = userServices.authenticate(email, password, users);
+    const hashedPassword = bcrypt.hashSync(password, 10);
+    const user = userServices.authenticate(email, hashedPassword, users);
     if (user) {
 
       res.send("already made. <a href=/register >try again</a>");
@@ -75,7 +75,7 @@ app.post("/register", (req, res) => {
       users[userID] = {
         id: userID,
         email: req.body.email,
-        password: bcrypt.hashSync(req.body.password, 10)
+        password: hashedPassword
       }
       req.session.user_id = userID;
       res.locals.user = userServices.getById(req.session.user_id, users);
