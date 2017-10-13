@@ -26,7 +26,6 @@ function forbiddenIfNotLoggedIn(req, res, next) {
   }
 }
 
-
 function findUsersURLS(database, currentUserId) {
   const obj = {};
   for (tinyURL in database) {
@@ -36,7 +35,6 @@ function findUsersURLS(database, currentUserId) {
   }
   return obj;
 }
-
 
 function getById(id, users) {
   for (user in users) {

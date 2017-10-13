@@ -47,10 +47,6 @@ app.use('/urls', (req, res, next) => {
   userServices.forbiddenIfNotLoggedIn(req, res, next);
 });
 
-// app.use('/urls/:id', (req, res, next) => {
-//   userServices.isThisYours(req, res, next);
-// });
-
 app.get("/register", (req, res) => {
   let templateVars = {
     user: users[req.session["user_id"]]
@@ -126,7 +122,6 @@ app.get("/urls/new", (req, res) => {
   };
   res.render("urls_new", templateVars);
 });
-
 
 app.post("/urls", (req, res) => {
   const shortURL = userServices.generateRandomString(6);

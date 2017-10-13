@@ -1,7 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-</head>
 <body>
   <% include partials/_header %>
   <h2>Here are our tiny urls</h2>
@@ -15,9 +13,9 @@
         <h4> ==> </h4>
       </td>
       <td>
-      </a>
-      <h4><a href="<%= urls[tinyURL] %>"><%= urls[tinyURL] %></a>
-      </h4>
+        <h4><a href="<%= urls[tinyURL] %>"><%= urls[tinyURL] %></a>
+        </h4>
+      </td>
       <td>
         <a href="/urls/<%= tinyURL %>">
           <button>
@@ -25,18 +23,17 @@
           </button>
         </a>
       </td>
-    </td>
-    <td>
-      <form action="/urls/<%= tinyURL%>/delete" method="POST">
-        <input type="hidden" name="DELETE" value="<%= tinyURL%>">
-        <button type="submit" name="deleteURL" id="deleteURL">
-          DELETE
-        </button>
-      </form>
-    </td>
-  </tr>
-  <% } %>
-</table>
-<h3>Create your own <a href="/urls/new">TINY URLS</a></h3>
+      <td>
+        <form action="/urls/<%= tinyURL%>/delete" method="POST">
+          <input type="hidden" name="DELETE" value="<%= tinyURL%>">
+          <button type="submit" name="deleteURL" id="deleteURL">
+            DELETE
+          </button>
+        </form>
+      </td>
+    </tr>
+    <% } %>
+  </table>
+  <h3>Create your own <a href="/urls/new">TINY URLS</a></h3>
 </body>
 </html>
