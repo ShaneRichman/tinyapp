@@ -1,3 +1,4 @@
+const bcrypt = require('bcrypt');
 function generateRandomString(numChars) {
   let string = "";
   let charOptions = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -9,7 +10,14 @@ function generateRandomString(numChars) {
 
 function authenticate(email, password, users) {
   for (user in users) {
-    if (users[user].email === email && users[user].password === password) {
+    console.log();
+    // const hashedUserPasswords = bcrypt.hashSync(users[user].password, 10)
+    // console.log(users);
+    console.log(users[user].password);
+    console.log(password);
+    // console.log("hashed password", hashedUserPasswords);
+    // console.log(bcrypt.compareSync(hashedUserPasswords, password));
+    if (users[user].email === email && bcrypt.compareSync(password, users[user].password)) {
       return users[user];
     }
   }
@@ -25,9 +33,6 @@ function forbiddenIfNotLoggedIn(req, res, next) {
   }
 }
 
-function urlBelongs() {
-
-}
 
 function findUsersURLS(database, currentUserId) {
   const obj = {};
@@ -54,6 +59,5 @@ module.exports = {
   authenticate: authenticate,
   forbiddenIfNotLoggedIn: forbiddenIfNotLoggedIn,
   getById: getById,
-  findUsersURLS: findUsersURLS,
-  urlBelongs: urlBelongs
+  findUsersURLS: findUsersURLS
 };

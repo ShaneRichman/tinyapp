@@ -1,6 +1,7 @@
 var express = require("express");
 var cookieParser = require('cookie-parser')
 const userServices = require("./index");
+const bcrypt = require('bcrypt');
 var app = express()
 app.use(cookieParser())
 var PORT = process.env.PORT || 8080; // default port 8080
@@ -25,12 +26,12 @@ const users = {
   "userRandomID": {
     id: "userRandomID",
     email: "user@example.com",
-    password: "purple-monkey-dinosaur"
+    password: bcrypt.hashSync("purple-monkey-dinosaur", 10)
   },
   "user2RandomID": {
     id: "user2RandomID",
     email: "user2@example.com",
-    password: "dishwasher-funk"
+    password: bcrypt.hashSync("dishwasher-funk", 10)
   }
 }
 
@@ -55,10 +56,9 @@ app.get("/register", (req, res) => {
 });
 
 app.post("/register", (req, res) => {
-  const {
-    email,
-    password
-  } = req.body;
+  const email = req.body.email;
+  const password = bcrypt.hashSync(req.body.password, 10);
+
   if (email === "" || password === "") {
     res.status(400);
     res.send("You need both an Email and a password. <a href=/register >try again</a>");
@@ -72,7 +72,7 @@ app.post("/register", (req, res) => {
       users[userID] = {
         id: userID,
         email: req.body.email,
-        password: req.body.password
+        password: bcrypt.hashSync(req.body.password, 10)
       }
       res.cookie("user_id", userID);
       res.locals.user = userServices.getById(req.cookies.user_id, users);
@@ -89,10 +89,8 @@ app.get("/login", (req, res) => {
 });
 
 app.post("/login", (req, res) => {
-  const {
-    email,
-    password
-  } = req.body;
+  const email = req.body.email;
+  const password = req.body.password;
   const user = userServices.authenticate(email, password, users);
   if (user) {
     res.cookie("user_id", user.id);
