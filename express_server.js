@@ -183,8 +183,10 @@ app.post("/urls", (req, res) => {
 app.post("/urls/:id/delete", (req, res) => {
   if (urlDatabase[req.params.id].userID === req.session["user_id"]) {
     delete urlDatabase[req.params.id];
+    res.redirect("/urls");
+  } else {
+    res.redirect("/notAllowed");
   }
-  res.redirect("/notAllowed");
 });
 
 app.post("/urls/:id", (req, res) => {
